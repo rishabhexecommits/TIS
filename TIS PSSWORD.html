@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TIS Password Generator /// By Rishabh</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #121212);
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00ffeaa6, 0 0 60px #00c8ff4d;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      margin-top: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      transition: 0.3s ease-in-out;
+    }
+
+    input {
+      background-color: #1a1a1a;
+      color: #00ffe4;
+      box-shadow: 0 0 8px #00ffe455 inset;
+    }
+
+    input::placeholder {
+      color: #00ffe48e;
+    }
+
+    button {
+      background: #00ffea;
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 0 15px #00ffee, 0 0 40px #00ffee55;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00ffee, 0 0 60px #00ffee88;
+    }
+
+    #copyBtn {
+      background-color: #39ff14;
+      color: #000;
+      box-shadow: 0 0 12px #39ff14a8;
+    }
+
+    #copyBtn:hover {
+      box-shadow: 0 0 25px #39ff14, 0 0 40px #39ff1480;
+    }
+
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #00ffb3;
+      word-wrap: break-word;
+      text-shadow: 0 0 8px #00ffea;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+      input, button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🔐 TIS Password Generator /// By Rishabh</h2>
+
+  <input type="text" id="pan" placeholder="Enter PAN (CAPITAL)" maxlength="10"
+         oninput="this.value = this.value.toUpperCase()">
+
+  <input type="date" id="dob">
+
+  <button onclick="generatePassword()">⚡ Generate Password</button>
+
+  <div id="output"></div>
+
+  <button id="copyBtn" onclick="copyPassword()" style="display: none;">📋 Copy Password</button>
+</div>
+
+<footer>
+  &copy; 2025 Rishabh Gupta. All Rights Reserved.
+</footer>
+
+<script>
+  function formatDateToDDMMYYYY(dateStr) {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "";
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return day + month + year;
+  }
+
+  function generatePassword() {
+    const pan = document.getElementById('pan').value.trim();
+    const dobInput = document.getElementById('dob').value.trim();
+    const output = document.getElementById('output');
+    const copyBtn = document.getElementById('copyBtn');
+
+    if (pan.length !== 10) {
+      output.textContent = "❌ PAN must be 10 characters long.";
+      copyBtn.style.display = "none";
+      return;
+    }
+
+    if (!dobInput) {
+      output.textContent = "❌ Please select your Date of Birth.";
+      copyBtn.style.display = "none";
+      return;
+    }
+
+    const formattedDOB = formatDateToDDMMYYYY(dobInput);
+    const password = pan.toLowerCase() + formattedDOB;
+    output.innerHTML = `✅ Your TIS Password: <span id="pass">${password}</span>`;
+    copyBtn.style.display = "block";
+  }
+
+  function copyPassword() {
+    const passText = document.getElementById('pass').textContent;
+    navigator.clipboard.writeText(passText).then(() => {
+      alert("✅ Password copied to clipboard!");
+    });
+  }
+</script>
+
+</body>
+</html>
